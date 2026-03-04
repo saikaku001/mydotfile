@@ -22,6 +22,12 @@ map('n', '<C-l>', '<C-w>l', 'Move to right window')
 map('n', '<leader>ww', ':vsplit<CR>', 'Vertical split')
 map('n', '<leader>wt', ':split<CR>', 'Horizontal split')
 
+-- ウィンドウサイズ変更（Ctrl + 矢印キー）
+map('n', '<C-Up>', ':resize +2<CR>', 'Increase window height')
+map('n', '<C-Down>', ':resize -2<CR>', 'Decrease window height')
+map('n', '<C-Left>', ':vertical resize -2<CR>', 'Decrease window width')
+map('n', '<C-Right>', ':vertical resize +2<CR>', 'Increase window width')
+
 -- バッファの移動 (Shift + h/l, Tab)
 map('n', '<S-h>', '<cmd>BufferLineCyclePrev<CR>', 'Previous buffer')
 map('n', '<S-l>', '<cmd>BufferLineCycleNext<CR>', 'Next buffer')
