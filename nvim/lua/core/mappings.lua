@@ -171,3 +171,21 @@ map('v', 'S', '<Plug>(operator-sandwich-add)', 'Add surrounding in visual mode')
 -- モデル選択 (Leader + cm)
 map('n', '<leader>cm', ':CopilotChatModels<CR>', 'Copilot Chat Models')
 map('v', '<leader>cm', ':CopilotChatModels<CR>', 'Copilot Chat Models')
+
+-- Comment.nvim
+-- 行コメントのトグル (gcc / ノーマル, gc / ビジュアル)
+map('n', 'gcc', function() require('Comment.api').toggle.linewise.current() end, 'Toggle line comment')
+-- ブロックコメントのトグル (gbc / ノーマル, gb / ビジュアル)
+map('n', 'gbc', function() require('Comment.api').toggle.blockwise.current() end, 'Toggle block comment')
+-- ビジュアルモードでの行コメントトグル
+map('x', 'gc', function()
+  local vmode = vim.fn.visualmode()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'nx', false)
+  require('Comment.api').toggle.linewise(vmode)
+end, 'Toggle line comment (visual)')
+-- ビジュアルモードでのブロックコメントトグル
+map('x', 'gb', function()
+  local vmode = vim.fn.visualmode()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'nx', false)
+  require('Comment.api').toggle.blockwise(vmode)
+end, 'Toggle block comment (visual)')
