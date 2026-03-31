@@ -62,7 +62,7 @@ return {
     { key = "}", mods = "LEADER", action = act({ MoveTabRelative = 1 }) },
 
     -- 画面フルスクリーン切り替え
-    { key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
+    { key = "Enter", mods = "CTRL|ALT", action = act.ToggleFullScreen },
 
     -- コピーモード
     -- { key = 'X', mods = 'LEADER', action = act.ActivateKeyTable{ name = 'copy_mode', one_shot =false }, },
