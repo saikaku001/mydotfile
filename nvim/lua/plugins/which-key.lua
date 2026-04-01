@@ -7,7 +7,14 @@ return {
   end,
   opts = {
     spec = {
-      { "<leader>d", group = "Debug" },
+      { "<leader>d",   group = "Debug" },
+      { "<leader>go",  group = "Octo" },
+      { "<leader>goc", group = "Comment" },
+      { "<leader>gol", group = "Label" },
+      { "<leader>goa", group = "Assignee" },
+      { "<leader>gox", group = "Reaction" },
+      { "<leader>got", group = "Thread" },
+      { "<leader>goG", group = "Repo/Gist" },
     },
   },
 }
