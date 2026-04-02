@@ -44,6 +44,7 @@ return {
 
     -- Comments
     { "<leader>goca", "<cmd>Octo comment add<cr>",    desc = "Comment Add" },
+    { "<leader>goca", "<cmd>Octo comment add<cr>", desc = "Comment Add (Visual)", mode = "v" },
     { "<leader>gocd", "<cmd>Octo comment delete<cr>", desc = "Comment Delete" },
 
     -- Labels
