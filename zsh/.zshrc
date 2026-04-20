@@ -43,9 +43,28 @@ alias ....="cd ../../.."
 alias ~="cd ~"
 
 # ============================================================
+# OS 判定
+# ============================================================
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  IS_MAC=true
+else
+  IS_MAC=false
+fi
+
+# ============================================================
 # ファイル・ディレクトリ操作
 # ============================================================
-alias ls="ls --color=auto"        # macOS の場合は gls または ls -G に変更
+# macOS の ls はデフォルトで --color=auto 非対応のため -G を使用
+# GNU coreutils (gls) がある場合はそちらを優先
+if $IS_MAC; then
+  if command -v gls &>/dev/null; then
+    alias ls="gls --color=auto"
+  else
+    alias ls="ls -G"
+  fi
+else
+  alias ls="ls --color=auto"
+fi
 alias ll="ls -lh"
 alias la="ls -lAh"
 alias lf="ls -lAh | grep"        # ファイル名でフィルタ: lf <キーワード>
@@ -98,10 +117,52 @@ alias du="du -sh"
 # ============================================================
 # macOS 向け
 # ============================================================
-alias brewup="brew update && brew upgrade && brew cleanup"
-alias flushdns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
-alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
-alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
+if $IS_MAC; then
+  alias brewup="brew update && brew upgrade && brew cleanup"
+  alias flushdns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
+  alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
+  alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
+
+  # macOS クリップボード
+  alias pbp="pbpaste"
+  alias pbc="pbcopy"
+fi
+
+# ============================================================
+# Linux 向け
+# ============================================================
+if ! $IS_MAC; then
+  # パッケージマネージャのアップデート (apt / pacman / dnf を自動判別)
+  if command -v apt &>/dev/null; then
+    alias sysup="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
+  elif command -v pacman &>/dev/null; then
+    alias sysup="sudo pacman -Syu"
+  elif command -v dnf &>/dev/null; then
+    alias sysup="sudo dnf upgrade -y"
+  fi
+
+  # DNS キャッシュフラッシュ
+  alias flushdns="sudo systemd-resolve --flush-caches 2>/dev/null || sudo resolvectl flush-caches"
+
+  # クリップボード (Wayland / X11 を自動判別)
+  if command -v wl-copy &>/dev/null; then
+    alias pbcopy="wl-copy"
+    alias pbpaste="wl-paste"
+  elif command -v xclip &>/dev/null; then
+    alias pbcopy="xclip -selection clipboard"
+    alias pbpaste="xclip -selection clipboard -o"
+  elif command -v xsel &>/dev/null; then
+    alias pbcopy="xsel --clipboard --input"
+    alias pbpaste="xsel --clipboard --output"
+  fi
+  alias pbc="pbcopy"
+  alias pbp="pbpaste"
+
+  # ファイルマネージャでディレクトリを開く (macOS の open 相当)
+  if command -v xdg-open &>/dev/null; then
+    alias open="xdg-open"
+  fi
+fi
 
 # ============================================================
 # ユーティリティ関数
